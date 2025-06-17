@@ -1,10 +1,8 @@
-const input = document.querySelector('#controls input');
-const createBtn = document.querySelector('[data-create]');
-const destroyBtn = document.querySelector('[data-destroy]');
-const boxes = document.getElementById('boxes');
+const input = document.querySelector("input[type='number']");
+const createButton = document.querySelector("[data-create]");
+const destroyButton = document.querySelector("[data-destroy]");
 
-createBtn.addEventListener('click', () => createBoxes(input.value));
-destroyBtn.addEventListener('click', destroyBox);
+const boxes = document.getElementById("boxes");
 
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215)
@@ -12,24 +10,32 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
+destroyButton.addEventListener("click", (event) => {
+  destroyBoxes();
+  input.value = ''; // Destroy sonrası input'u temizle
+});
+
+createButton.addEventListener("click", (event) => {
+  destroyBoxes();              // Önce mevcut kutuları sil
+  createBoxes(input.value);    // Yeni kutuları oluştur
+  input.value = '';            // Input değerini temizle
+});
+
 function createBoxes(amount) {
-  const amountNumber = Number(amount);
-  boxes.innerHTML = '';
   let size = 30;
 
-  if (amountNumber >= 1 && amountNumber <= 100) {
-    for (let i = 0; i < amountNumber; i++) {
-      const div = document.createElement('div');
-
-      div.style.width = `${size}px`;
-      div.style.height = `${size}px`;
-      div.style.backgroundColor = getRandomHexColor();
-      boxes.appendChild(div);
-
+  if (amount >= 1 && amount <= 100) {
+    for (let i = 0; i < amount; i++) {
+      const box = document.createElement("div");
+      box.style.height = `${size}px`;
+      box.style.width = `${size}px`;
+      box.style.backgroundColor = getRandomHexColor();
+      boxes.appendChild(box);
       size += 10;
     }
   }
 }
-function destroyBox() {
+
+function destroyBoxes() {
   boxes.innerHTML = '';
 }
